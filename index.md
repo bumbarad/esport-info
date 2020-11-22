@@ -12,3 +12,8 @@ A base structure of the application was added via HTML templates. Also the base 
 ### 6.11.2020 Embedding Twitch
 
 Important part of the website are embedded online streams using Twitch website. Online streaming was added for ESL and Dreamhack pages. Another significant part of the application will be the Twitch API. For now using this API is a work in progress, however the code was updated to hold the basic API communication structure. Also the API usage was assured at twitch website by registration of the application.
+
+
+### 22.11.2020 Refactoring Twitch and adding own API
+
+For convenience twitch API functions were refactored into a stand alone class and file. Also an API was created together with interactive swagger ui. Api allows user to gain basic information about any stream from Twitch, making the communication way easier than using official twitch API. Also it ispossible to add/delete twitch channels to a watch list, which leads to a creation of a new page for each new channel.
