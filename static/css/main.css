@@ -1,0 +1,99 @@
+body {
+	margin :0;
+	padding :0;
+	background-color :#111111;
+	line-height :25px;
+}
+a {
+	outline :0;
+	text-decoration:none;
+}
+img {
+	border :0;
+}
+
+#header {
+	height :220px;
+	width :100%;
+	background-repeat :repeat-x;
+	background-position :bottom;
+	background-color :#000000;
+
+}
+
+#header div {
+	width :960px;
+	margin :0 auto;
+
+	position :relative;
+}
+
+#header div a img {
+	border :0;
+	float :left;
+	overflow :hidden;
+	 margin-left: auto;
+    margin-right: auto;
+}
+#header div img.logo {
+	border :10;
+	overflow :hidden;
+	margin-top :10px;
+	 margin-left: auto;
+    margin-right: auto;
+}
+#header div ul.navigation {
+
+	padding :0;
+	list-style-type :none;
+	position :absolute;
+	left :30px;
+	top :160px;
+	overflow :hidden;
+	/*height: 250px;*/
+	width: 900px;
+
+}
+#header div ul.navigation li {
+	float :left;
+}
+#header div ul.navigation li:first-child a {
+	padding-left :0;
+}
+#header div ul.navigation li a {
+	text-decoration :none;
+	margin :0px 0px 0px 10px;
+	padding :10px 20px 0px 0px;
+	font-size :30px;
+	color :#ffffff;
+	width :960px;
+}
+
+#main {
+    color: #ffffff;
+    width :960px;
+	margin :0 auto;
+
+	position :relative;
+}
+
+#main frame {
+    height: 450px;
+    width: 800px;
+    margin: 50px;
+}
+
+.online {
+    margin-right: -10px;
+}
+
+#footer {
+    color: #000000;
+    background-color: #444444;
+    height :100px;
+	width :100%;
+	position: fixed;
+    left: 0;
+    bottom: 0;
+    text-align:center;
+}
