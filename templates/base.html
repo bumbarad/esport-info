@@ -10,32 +10,32 @@
 <body>
 <div id="header">
     <div>
-        {% block logo %}{% endblock %}
+        {% if stream and streams[stream]['banner'] %}
+            <img class="logo" src="{{ streams[stream]['banner'] }}" width="400" title="banner">
+        {% else %}
+            <img class="logo" src="{{ url_for('static', filename='images/csgo_logo.jpg') }}" width="400" title="banner">
+        {% endif %}
         <ul class="navigation">
             <li>
-                <a href="./">Home</a>
+                <a href="/">Home</a>
             </li>
+            {% for channel in streams %}
             <li>
-                {% if online_streams[0] %}
+                {% if streams[channel]['is_live'] %}
                     <img class="online" src="{{ url_for('static', filename='images/online.png') }}" width="20" height="20">
                 {% endif %}
-                <a href="esl">ESL</a>
+                <a href="/custom/{{ channel }}">{{ streams[channel]['display_name'] }}</a>
             </li>
-            <li>
-                {% if online_streams[1] %}
-                    <img class="online" src="{{ url_for('static', filename='images/online.png') }}" width="20" height="20">
-                {% endif %}
-                <a href="dreamhack">Dreamhack</a>
-            </li>
+            {% endfor %}
         </ul>
     </div>
 </div>
 
 <div id="main">
-    {% if stream %}
+    {% if stream_url %}
         <div>
             <iframe
-                src="{{ stream }}"
+                src="{{ stream_url }}"
                 height="450"
                 width="800"
                 frameborder="0"
