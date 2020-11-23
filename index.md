@@ -17,3 +17,8 @@ Important part of the website are embedded online streams using Twitch website. 
 ### 22.11.2020 Refactoring Twitch and adding own API
 
 For convenience twitch API functions were refactored into a stand alone class and file. Also an API was created together with interactive swagger ui. Api allows user to gain basic information about any stream from Twitch, making the communication way easier than using official twitch API. Also it ispossible to add/delete twitch channels to a watch list, which leads to a creation of a new page for each new channel.
+
+
+### 23.11.2020 Minor changes
+
+Some refactoring and more systematic approach was done. Limited impact on functionality. Also the code was added to github (www.github.com/bumbarad/esport-info).
