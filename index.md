@@ -22,3 +22,7 @@ For convenience twitch API functions were refactored into a stand alone class an
 ### 23.11.2020 Minor changes
 
 Some refactoring and more systematic approach was done. Limited impact on functionality. Also the code was added to github.
+
+### 1.12.2020 basic API finalized
+
+Basic api functions were implemented and tested. Added forms using the same API.
