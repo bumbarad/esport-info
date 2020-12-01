@@ -45,6 +45,11 @@
         </div>
     {% endif %}
 
+    {% if stream and not streams[stream]['static'] %}
+        <form action="/form/delete" method="POST">
+            <p><button type="submit" name='channel' value="{{ stream }}"> Remove </button></p>
+        </form>
+    {% endif %}
 
     {% block body %}{% endblock %}
 </div>
