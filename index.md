@@ -26,3 +26,12 @@ Some refactoring and more systematic approach was done. Limited impact on functi
 ### 1.12.2020 basic API finalized
 
 Basic api functions were implemented and tested. Added forms using the same API.
+
+### 11.12.2020 Adding Liquipedia API, fulfitting formal requirements 
+
+Liquipedia API was added. Trough API requests application obtains and decomposes required data about teams. However it is not possible to guarantee successfull data extraction. Team names, which are later feeded to the Liquipedia GET request are extracted from stream titles. Sometimes title contains a typo, special characters or abbreviation due to excessive name length of some teams (for example Complexity Gaming is ofter refered as Complexity, etc. I have made attemtps to fit some abbreviation, nevertheless it is not possible for each team and abbreviation of name in the stream title is unpredictable).
+
+Formal requirements should be fulfit with this update, however there are ways how to improve the application in case of need.
+
+
+
