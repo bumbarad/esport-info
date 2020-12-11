@@ -21,7 +21,7 @@
             </li>
             {% for channel in streams %}
             <li>
-                {% if streams[channel]['is_live'] %}
+                {% if streams[channel]['online'] %}
                     <img class="online" src="{{ url_for('static', filename='images/online.png') }}" width="20" height="20">
                 {% endif %}
                 <a href="/custom/{{ channel }}">{{ streams[channel]['display_name'] }}</a>
@@ -51,7 +51,26 @@
         </form>
     {% endif %}
 
-    {% block body %}{% endblock %}
+    <div id="info">
+        {% if teams %}
+            {% for team in teams %}
+                <div>
+                    <h2> Team: {{ team['name'] }} </h2>
+
+                    {{  team['info']|safe  }}
+
+                    {{  team['players']|safe  }}
+
+                    <p> Income: {{  team['income']  }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+{% block body %}{% endblock %}
+
+
 </div>
 
 <div id="footer">

@@ -1,9 +1,10 @@
-from pathlib import Path
 import flask
 from flask import Flask, render_template, make_response, jsonify, redirect, url_for, request
-from flask_restplus import Api, Resource, fields, reqparse
+from flask_restplus import Api, Resource, fields
 from twitch import Twitch
+from liquipedia import Liquipedia
 import requests
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'whatever'
@@ -11,7 +12,20 @@ api_bp = flask.Blueprint("api", __name__, url_prefix="/api")
 api = Api(api_bp, title="Esports-info API", version="1.0", doc="/docs")
 app.register_blueprint(api_bp)
 twitch: Twitch
+lq: Liquipedia
 channel_api_model = api.model('Channel', {'channel': fields.String('Name of the channel')})
+
+
+def get_team_info(name: str):
+    info = []
+    stream_title = stream_title = twitch.streams[name]['title']
+    if not twitch.is_online(twitch.streams[name]) and twitch.active_video is not None:
+        stream_title = twitch.active_video['title']
+    for team_name in lq.team_names:
+        if team_name.lower() in stream_title.lower() or team_name.replace(" ", "").lower() in stream_title.lower() \
+                or team_name.lower().replace(" gaming", "") in stream_title.lower():
+            info.append(team_name)
+    return info
 
 
 @api.route('/custom', endpoint='custom', methods=['POST', 'DELETE'])
@@ -58,7 +72,15 @@ def index():
 @app.route('/custom/<string:name>')
 def custom(name: str):
     twitch.refresh_streams()
-    return render_template("custom.html", streams=twitch.streams, stream_url=twitch.get_stream_url(name), stream=name)
+    stream_url = twitch.get_stream_url(name)
+    teams = False
+    if twitch.streams[name]['static']:
+        teams = []
+        for team in get_team_info(name):
+            teams.append(lq.get_team_info(team))
+        if len(teams) is 0:
+            teams = False
+    return render_template("custom.html", streams=twitch.streams, stream_url=stream_url, stream=name, teams=teams)
 
 
 @app.route('/form/add', methods=['POST'])
@@ -79,13 +101,16 @@ def delete_form():
 
 if __name__ == "__main__":
     twitch = Twitch()
-    twitch.add_stream("esl_csgo")
-    twitch.streams['esl_csgo']['static'] = True
-    twitch.streams['esl_csgo']['display_name'] = "ESL"
-    twitch.streams['esl_csgo']['banner'] = '/static/images/esl_logo.png'
+    twitch.add_stream_by_id("31239503")
+    twitch.streams['ESL_CSGO']['static'] = True
+    twitch.streams['ESL_CSGO']['display_name'] = "ESL"
+    twitch.streams['ESL_CSGO']['banner'] = '/static/images/esl_logo.png'
 
     twitch.add_stream("dreamhackcs")
     twitch.streams['dreamhackcs']['static'] = True
     twitch.streams['dreamhackcs']['display_name'] = "Dreamhack"
     twitch.streams['dreamhackcs']['banner'] = '/static/images/dreamhack_logo.png'
+
+    lq = Liquipedia()
+
     app.run(debug=True)
