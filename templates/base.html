@@ -43,6 +43,12 @@
                 allowfullscreen="true">
             </iframe>
         </div>
+    {% else %}
+        {% if stream %}
+            <div>
+                Video is not available.
+            </div>
+        {% endif %}
     {% endif %}
 
     {% if stream and not streams[stream]['static'] %}

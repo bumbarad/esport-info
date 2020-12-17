@@ -38,8 +38,11 @@ class Twitch:
 
     def __get_offline_stream_url(self, channel_id: str) -> str:
         videos = self.__query("https://api.twitch.tv/helix/videos?user_id=" + channel_id, header={'type': 'archive'})
-        self.active_video = videos['data'][0]
-        return "https://player.twitch.tv/?video=" + videos['data'][0]['id'] + "&parent=127.0.0.1"
+        if len(videos['data']) > 0:
+            self.active_video = videos['data'][0]
+            return "https://player.twitch.tv/?video=" + videos['data'][0]['id'] + "&parent=127.0.0.1"
+        else:
+            return False
 
     def add_stream(self, channel_name: str):
         info = self.get_info_about(channel_name)

@@ -23,7 +23,7 @@ class Liquipedia:
                 raise requests.exceptions.RequestException(response.json(), response.status_code)
             return BeautifulSoup(page_html, features="lxml")
         else:
-            raise requests.exceptions.RequestException(response.json(), response.status_code)
+            return None
 
     def __save_teams(self):
         """Due to limit rate, the list of teams was made and stored in a file before launching the application"""
@@ -37,36 +37,44 @@ class Liquipedia:
 
         team_dict = {'name': team_name}
 
-        info = soup.p
-        for sup in info.find_all('sup'):
-            sup.decompose()
-        for link in info.find_all('a'):
-            link.replace_with(link.text)
-        team_dict['info'] = info
+        if soup is None:
+            team_dict['info'] = "Description not available. "
+            team_dict['income'] = "Not available."
+            team_dict['players'] = "Player list not available."
+        else:
+            info = soup.p
+            for sup in info.find_all('sup'):
+                sup.decompose()
+            for link in info.find_all('a'):
+                link.replace_with(link.text)
+            team_dict['info'] = info
 
-        income = soup.find_all('div')
-        for i in range(len(income)):
-            if "Total Winnings:" in income[i].text:
-                team_dict['income'] = income[i + 1].text
+            income = soup.find_all('div')
+            for i in range(len(income)):
+                if "Total Winnings:" in income[i].text:
+                    team_dict['income'] = income[i + 1].text
 
-        players = soup.find_all('table')
-        for table in players:
-            if "Active Squad" in table.text:
-                players = table
-                break
-        for sup in players.find_all('sup'):
-            sup.decompose()
-        for img in players.find_all('img'):
-            img.decompose()
-        for link in players.find_all('a'):
-            link.replace_with(link['title'])
-        team_dict['players'] = players
+            players = soup.find_all('table')
+            for table in players:
+                if "Active Squad" in table.text:
+                    players = table
+                    break
+            for sup in players.find_all('sup'):
+                sup.decompose()
+            for img in players.find_all('img'):
+                img.decompose()
+            for link in players.find_all('a'):
+                link.replace_with(link['title'])
+            team_dict['players'] = players
 
         self.teams[team_name] = team_dict
 
     def get_team_info(self, team_name: str):
         team_name = team_name.replace(" ", "_")
         team_name = quote(team_name)
+
+        if team_name in self.teams.keys() and self.teams[team_name] is None:
+            self.teams.pop(team_name)
 
         if team_name not in self.teams.keys():
             self.__append_team(team_name)
